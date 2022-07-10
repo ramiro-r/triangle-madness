@@ -19,6 +19,8 @@ let triangles = [];
 let interval, trackTimeout;
 let audio, canvas, tapIndicator, replayBtn;
 let gl;
+const LIMIT = 200;
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 function main() {
     canvas = document.getElementById('webgl');
@@ -101,6 +103,11 @@ function toggleTapIndicator(visible) {
 }
 
 function generateTriangle() {
+    if (isSafari && triangles.length > LIMIT) {
+        handleTrackEnded();
+        return;
+    }
+
     const triangle = {
         vertices: [
             Math.random() * plusOrMinus(), Math.random() * plusOrMinus(), 
