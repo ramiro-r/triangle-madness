@@ -13,19 +13,16 @@ const FSHADER_SOURCE =
         'gl_FragColor = u_FragColor;' +
     '}\n';
 
-const LIMIT = 30000;
-const HAVE_FUTURE_DATA = 3;
-
 let appBootstrapped = false;
 let isDrawing = false;
 let triangles = [];
-let interval;
-let audio, canvas, tap_indicator, replayBtn;
+let interval, trackTimeout;
+let audio, canvas, tapIndicator, replayBtn;
 let gl;
 
 function main() {
     canvas = document.getElementById('webgl');
-    tap_indicator = document.getElementById('tap_indicator');
+    tapIndicator = document.getElementById('tap_indicator');
     audio = document.getElementById('track');
     replayBtn = document.getElementById('replayBtn');
 
@@ -59,10 +56,9 @@ function main() {
 }
 
 function handleTrackEnded() {
+    pauseAudio()
     stopDrawing();
-    audio.currentTime = 0;
     toggleFooter(true);
-
 }
 
 function toggleDrawing() {
@@ -74,6 +70,7 @@ function toggleDrawing() {
     }
     toggleFooter(false);
     toggleTapIndicator(false);
+    trackTimeout = setTimeout(handleTrackEnded, Math.floor(audio.duration) * 1000);
     audio.play();
     isDrawing = true;
     interval = setInterval(() => generateTriangle(), 545);
@@ -82,6 +79,10 @@ function toggleDrawing() {
 function pauseAudio() {
     audio.pause();
     audio.currentTime = 0;
+    if (trackTimeout) {
+        clearTimeout(trackTimeout);
+        trackTimeout = null;
+    }
 }
 
 function stopDrawing() {
@@ -96,14 +97,10 @@ function toggleFooter(visible) {
 }
 
 function toggleTapIndicator(visible) {
-    tap_indicator.style = visible ? "display: block" : "display: none";
+    tapIndicator.style = visible ? "display: block" : "display: none";
 }
 
 function generateTriangle() {
-    if (triangles.length > LIMIT) {
-        stopDrawing()
-        return;
-    }
     const triangle = {
         vertices: [
             Math.random() * plusOrMinus(), Math.random() * plusOrMinus(), 
