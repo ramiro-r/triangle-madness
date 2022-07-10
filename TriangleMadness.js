@@ -36,17 +36,10 @@ function main() {
 
     setCanvasFullWidth(canvas);
 
+    const content = document.querySelector('.content');
+    content.addEventListener('click', toggleDrawing);
     replayBtn.addEventListener('click', toggleDrawing);
-    window.addEventListener('resize', () => setCanvasFullWidth(canvas));
-
-    audio.addEventListener('canplay', audioReady);
-    audio.addEventListener('ended', handleTrackEnded);
-    if (audio.readyState > HAVE_FUTURE_DATA) {
-        audioReady();
-    } else if (audio.readyState === 0) {
-        console.log('loading audio');
-        audio.load();
-    }
+    window.addEventListener('resize', setCanvasFullWidth);
 
     gl = getWebGLContext(canvas);
     
@@ -65,16 +58,6 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
-function audioReady() {
-    console.log('AUDIO READY!');
-    if (appBootstrapped) {
-        return;
-    }
-    const content = document.querySelector('.content');
-    content.addEventListener('click', () => toggleDrawing());
-    appBootstrapped = true;
-}
-
 function handleTrackEnded() {
     stopDrawing();
     audio.currentTime = 0;
@@ -83,7 +66,6 @@ function handleTrackEnded() {
 }
 
 function toggleDrawing() {
-    console.log('TOGGLING THE DRAWING!');
     if (isDrawing) {
         pauseAudio();
         stopDrawing();
@@ -161,7 +143,7 @@ function plusOrMinus() {
     return Math.random() < 0.5 ? -1 : 1;
 }
 
-function setCanvasFullWidth(canvas) {
+function setCanvasFullWidth() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
