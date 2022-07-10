@@ -68,6 +68,7 @@ function audioReady() {
     }
     const content = document.querySelector('.content');
     content.addEventListener('click', () => toggleDrawing());
+    content.addEventListener('touchstart', () => toggleDrawing());
     appBootstrapped = true;
 }
 
