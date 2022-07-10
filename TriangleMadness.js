@@ -39,7 +39,7 @@ function main() {
     replayBtn.addEventListener('click', toggleDrawing);
     window.addEventListener('resize', () => setCanvasFullWidth(canvas));
 
-    audio.addEventListener('canplaythrough', audioReady);
+    audio.addEventListener('canplay', audioReady);
     audio.addEventListener('ended', handleTrackEnded);
     if (audio.readyState > HAVE_FUTURE_DATA) {
         audioReady();
