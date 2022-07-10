@@ -41,8 +41,11 @@ function main() {
 
     audio.addEventListener('canplaythrough', audioReady);
     audio.addEventListener('ended', handleTrackEnded);
-    if (audio.readystate > HAVE_FUTURE_DATA) {
+    if (audio.readyState > HAVE_FUTURE_DATA) {
         audioReady();
+    } else if (audio.readyState === 0) {
+        console.log('loading audio');
+        audio.load();
     }
 
     gl = getWebGLContext(canvas);
@@ -68,7 +71,6 @@ function audioReady() {
     }
     const content = document.querySelector('.content');
     content.addEventListener('click', () => toggleDrawing());
-    content.addEventListener('touchstart', () => toggleDrawing());
     appBootstrapped = true;
 }
 
