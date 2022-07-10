@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body onload='main()' style="margin:0">
+        <div class="content">
+            <canvas id="webgl">
+                Please use a browser that supports canvas
+            </canvas>
+            <img id="tap_indicator" src="./assets/cursor.gif" alt="tap_indicator" />
+        </div>
+        <audio id="track" preload="auto" src="./assets/Maarten-Schellekens-Sweet-Love.mp3">
+            Your browser does not support the
+            <code>audio</code> element.
+        </audio>
+
+        <footer>
+            <ul>
+                <li>
+                    <a href="https://twitter.com/r_ramiro_r"><img src="./assets/twitter.png" alt="twitter" /></a>
+                </li>
+                <li>
+                    <a href="https://github.com/ramiro-r"><img src="./assets/github.png" alt="github" /></a>
+                </li>
+                <li>
+                    <img id="replayBtn" src="./assets/replay-icon.jpeg" alt="replay" />
+                </li>
+            </ul>
+        </footer>
+
+        <script src="./lib/webgl-utils.js"></script>
+        <script src="./lib/webgl-debug.js"></script>
+        <script src="./lib/cuon-utils.js"></script>
+        <script src="./lib/utils.js"></script>
+        <script src="./TriangleMadness.js"></script>
+    </body>
+</html>
