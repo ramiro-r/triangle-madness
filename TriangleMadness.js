@@ -66,6 +66,7 @@ function main() {
 }
 
 function audioReady() {
+    console.log('AUDIO READY!');
     if (appBootstrapped) {
         return;
     }
@@ -82,6 +83,7 @@ function handleTrackEnded() {
 }
 
 function toggleDrawing() {
+    console.log('TOGGLING THE DRAWING!');
     if (isDrawing) {
         pauseAudio();
         stopDrawing();
