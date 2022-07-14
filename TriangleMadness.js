@@ -19,7 +19,8 @@ let triangles = [];
 let interval, trackTimeout;
 let audio, canvas, tapIndicator, replayBtn;
 let gl;
-const LIMIT = 200;
+const LIMIT = 150;
+const TRIANGLES_CAP = 20;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 function main() {
@@ -103,11 +104,6 @@ function toggleTapIndicator(visible) {
 }
 
 function generateTriangle() {
-    if (isSafari && triangles.length > LIMIT) {
-        handleTrackEnded();
-        return;
-    }
-
     const triangle = {
         vertices: [
             Math.random() * plusOrMinus(), Math.random() * plusOrMinus(), 
@@ -118,6 +114,11 @@ function generateTriangle() {
     }
 
     triangles.push(triangle);
+
+    // Remove the first n triangles for performance
+    if (triangles.length > LIMIT) {
+        triangles = triangles.slice(1);
+    }
     drawTriangleList(triangles);
 }
 
@@ -140,7 +141,7 @@ function drawTriangle(vertices, color) {
         return;
     }
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
 }
 
 function plusOrMinus() {
@@ -154,7 +155,7 @@ function setCanvasFullWidth() {
 
 function initVertexBuffers(gl, coordinates) {
     const vertices = new Float32Array(coordinates);
-    const n = coordinates.length / 2;
+    const n = coordinates.length / 2; // each vert contains x,y coordinates
 
     // 1 - create a buffer object
     const vertexBuffer = gl.createBuffer();
